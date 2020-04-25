@@ -45,7 +45,7 @@ public class UniqLauncher {
                 amountOfStrings,  inputFileName, outputFileName);
 
         try {
-            uniq.begin(inputFileName);
+            uniq.begin(inputFileName, outputFileName);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }

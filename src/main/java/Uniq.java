@@ -1,6 +1,4 @@
 import java.io.*;
-import java.util.ArrayList;
-
 
 public class Uniq {
 
@@ -21,30 +19,40 @@ public class Uniq {
         this.outputFileName = outputFileName;
     }
 
-    public void begin(String inputFileName) throws IOException {
+    public void begin(String inputFileName, String outputFileName) throws IOException {
         BufferedReader br;
-        ArrayList<String> result = new ArrayList<>();
+        BufferedWriter bw;
         if (inputFileName == null) {
             System.out.println("Enter text:");
             br = new BufferedReader(new InputStreamReader(System.in));
         } else {
             br = new BufferedReader(new FileReader(inputFileName));
         }
+        if(outputFileName == null){
+            bw = new BufferedWriter(new OutputStreamWriter(System.out));
+        } else {
+            bw = new BufferedWriter(new FileWriter(outputFileName));
+        }
+        unuqStuff(br, bw);
+    }
+
+    private void unuqStuff(BufferedReader br, BufferedWriter bw) throws IOException {
         String prevStr = null;
         try (br) {
-            String str;
-            int number = 1;
-            while ((str = br.readLine()) != null) {
-                if (equalStrings(str, prevStr)) number += 1;
-                else {
-                    textWithCountedStrings(number, prevStr, result);
-                    prevStr = str;
-                    number = 1;
+            try (bw) {
+                String str;
+                int number = 1;
+                while ((str = br.readLine()) != null) {
+                    if (equalStrings(str, prevStr)) number += 1;
+                    else {
+                        textWithCountedStrings(number, prevStr, bw);
+                        prevStr = str;
+                        number = 1;
+                    }
                 }
+                textWithCountedStrings(number, prevStr, bw);
             }
-            textWithCountedStrings(number, prevStr, result);
         }
-        write(result);
     }
 
     private boolean equalStrings(String str, String prevStr) {
@@ -60,34 +68,23 @@ public class Uniq {
         return res;
     }
 
-    private void textWithCountedStrings(int number, String prevStr, ArrayList<String> result) {
+    private void textWithCountedStrings(int number, String prevStr,BufferedWriter bw) throws IOException {
         if (prevStr == null) return;
-        if (onlyUniqStrings && number == 1) result.add(prevStr);
+        if (onlyUniqStrings && number == 1) {
+            bw.write(prevStr);
+            bw.newLine();
+        }
         if (amountOfStrings) {
             if (number > 1) {
-                result.add(number + " " + prevStr);
+                bw.write(number + " " + prevStr);
             } else {
-                result.add(prevStr);
+                bw.write(prevStr);
             }
+            bw.newLine();
         }
-        if (!amountOfStrings && !onlyUniqStrings)
-            result.add(prevStr);
-
-    }
-
-    private void write(ArrayList<String> result) throws IOException {
-        if (outputFileName == null) {
-            System.out.println("Output text:");
-            for (String str : result) {
-                System.out.println(str);
-            }
-        } else {
-            try (BufferedWriter bw = new BufferedWriter(new FileWriter(outputFileName))) {
-                for (String str : result) {
-                    bw.write(str);
-                    bw.newLine();
-                }
-            }
+        if (!amountOfStrings && !onlyUniqStrings) {
+            bw.write(prevStr);
+        bw.newLine();
         }
     }
 }
