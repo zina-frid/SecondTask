@@ -28,15 +28,15 @@ public class Uniq {
         } else {
             br = new BufferedReader(new FileReader(inputFileName));
         }
-        if(outputFileName == null){
+        if (outputFileName == null){
             bw = new BufferedWriter(new OutputStreamWriter(System.out));
         } else {
             bw = new BufferedWriter(new FileWriter(outputFileName));
         }
-        unuqStuff(br, bw);
+        processing(br, bw);
     }
 
-    private void unuqStuff(BufferedReader br, BufferedWriter bw) throws IOException {
+    private void processing(BufferedReader br, BufferedWriter bw) throws IOException {
         String prevStr = null;
         try (br) {
             try (bw) {
