@@ -6,32 +6,31 @@ public class Uniq {
     private boolean ignoreRegister;
     private boolean onlyUniqStrings;
     private boolean amountOfStrings;
-    private String inputFileName;
-    private String outputFileName;
+    private File inputFile;
+    private File outputFile;
 
     public Uniq(int skipNSymbols, boolean ignoreRegister, boolean onlyUniqStrings,
-                boolean amountOfStrings, String inputFileName, String outputFileName) {
+                boolean amountOfStrings, File inputFile, File outputFile) {
         this.skipNSymbols = skipNSymbols;
         this.ignoreRegister = ignoreRegister;
         this.onlyUniqStrings = onlyUniqStrings;
         this.amountOfStrings = amountOfStrings;
-        this.inputFileName = inputFileName;
-        this.outputFileName = outputFileName;
+        this.inputFile = inputFile;
+        this.outputFile = outputFile;
     }
 
-    public void begin(String inputFileName, String outputFileName) throws IOException {
+    public void begin(File inputFile, File outputFile) throws IOException {
         BufferedReader br;
         BufferedWriter bw;
-        if (inputFileName == null) {
-            System.out.println("Enter text:");
+        if (inputFile == null) {
             br = new BufferedReader(new InputStreamReader(System.in));
         } else {
-            br = new BufferedReader(new FileReader(inputFileName));
+            br = new BufferedReader(new FileReader(inputFile));
         }
-        if (outputFileName == null){
+        if (outputFile== null){
             bw = new BufferedWriter(new OutputStreamWriter(System.out));
         } else {
-            bw = new BufferedWriter(new FileWriter(outputFileName));
+            bw = new BufferedWriter(new FileWriter(outputFile));
         }
         processing(br, bw);
     }
@@ -84,7 +83,7 @@ public class Uniq {
         }
         if (!amountOfStrings && !onlyUniqStrings) {
             bw.write(prevStr);
-        bw.newLine();
+            bw.newLine();
         }
     }
 }

@@ -3,6 +3,7 @@ import org.kohsuke.args4j.CmdLineException;
 import org.kohsuke.args4j.CmdLineParser;
 import org.kohsuke.args4j.Option;
 
+import java.io.File;
 import java.io.IOException;
 
 
@@ -20,10 +21,10 @@ public class UniqLauncher {
     private boolean amountOfStrings = false;
 
     @Argument(metaVar = "InputName", usage = "Input file name")
-    private String inputFileName = null;
+    private File inputFile = null;
 
     @Option(name="-o", metaVar = "outputFile", usage = "Output file name")
-    private String outputFileName = null;
+    private File outputFile = null;
 
     public static void main(String[] args) throws IOException {
         new UniqLauncher().launch(args);
@@ -42,10 +43,10 @@ public class UniqLauncher {
         }
 
         Uniq uniq = new Uniq(skipNSymbols, ignoreRegister,  onlyUniqStrings,
-                amountOfStrings,  inputFileName, outputFileName);
+                amountOfStrings, inputFile, outputFile);
 
         try {
-            uniq.begin(inputFileName, outputFileName);
+            uniq.begin(inputFile, outputFile);
         } catch (IOException e) {
             System.err.println(e.getMessage());
         }
